@@ -42,9 +42,7 @@ const FoodPartnerRegister = () => {
           <h1 id="partner-register-title" className="auth-title">Partner sign up</h1>
           <p className="auth-subtitle">Grow your business with our platform.</p>
         </header>
-        <nav className="auth-alt-action" style={{marginTop: '-4px'}}>
-          <strong style={{fontWeight:600}}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
-        </nav>
+        {/* Switch links removed per request - partner stays on this registration form */}
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
             <label htmlFor="businessName">Business Name</label>
