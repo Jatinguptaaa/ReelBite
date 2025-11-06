@@ -5,6 +5,52 @@
   height: 100dvh;
   background: var(--color-bg);
   overflow: hidden; /* parent hides overscroll glow on iOS */
+  position: relative;
+}
+
+/* Address bar styling */
+.address-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+  width: 100%;
+}
+
+.location-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.address-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  gap: 2px;
+}
+
+.delivery-label {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.95);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.address-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
 /* Vertical feed with snap scrolling */
@@ -60,21 +106,29 @@
 
 .reel-content {
   position: relative;
-  width: 100%;
+  width: 75%;
   padding: var(--space-6);
   padding-bottom: calc(env(safe-area-inset-bottom, 0) + 72px); /* make space for bottom nav */
   display: flex;
   flex-direction: column;
   padding-right: 4.5rem;
-  gap: var(--space-4);
+  gap: var(--space-3);
   pointer-events: auto; /* enable button click */
+}
+
+.reel-dish-name {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+  margin: 0;
 }
 
 /* Truncated to two lines */
 .reel-description {
   color: #fff;
   text-shadow: 0 1px 2px rgba(0,0,0,.4);
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.3;
   display: -webkit-box;
   line-clamp: 2;
@@ -82,24 +136,69 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   max-width: 90ch;
+  margin: 0;
 }
 
-.reel-btn {
-  align-self: flex-start;
-  background: var(--color-accent);
+.reel-partner-name {
   color: #fff;
+  font-size: 0.85rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+  margin: 0;
+}
+
+.reel-partner-name .store-icon { 
+  margin-right: 8px;
+  vertical-align: middle;
+  opacity: 0.95;
+}
+
+.reel-partner-name { display: flex; align-items: center; gap: 8px; }
+
+.reel-bottom-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.menu-btn,
+.add-to-cart-btn {
+  border: none;
   border-radius: 999px;
   padding: 10px 16px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: .3px;
   text-decoration: none;
   box-shadow: var(--shadow-md);
-  transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+  transition: transform var(--transition-base), background var(--transition-base);
+  cursor: pointer;
 }
 
-.reel-btn:hover { background: var(--color-accent-hover); }
-.reel-btn:active { transform: translateY(1px); }
-.reel-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.menu-btn {
+  background: color-mix(in srgb, #000 36%, transparent);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  min-width: 84px;
+}
+
+.add-to-cart-btn {
+  background: #2f80ed; /* blue accent like image */
+  color: white;
+  flex-grow: 1;
+  padding: 12px 18px;
+  font-size: 0.96rem;
+  box-shadow: 0 6px 18px rgba(47,128,237,0.18);
+}
+
+.menu-btn:hover, 
+.add-to-cart-btn:hover { 
+  transform: translateY(-1px);
+}
+
+.menu-btn:active,
+.add-to-cart-btn:active { 
+  transform: translateY(1px);
+}
 
 /* Desktop tweaks */
 @media (min-width: 768px) {
@@ -122,16 +221,27 @@
   width: 48px;
   height: 48px;
   border-radius: 999px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: color-mix(in srgb, #000 35%, transparent);
   backdrop-filter: blur(2px);
   color: #fff;
   border: 1px solid rgba(255,255,255,.15);
   box-shadow: var(--shadow-md);
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  transition: transform 0.2s ease;
 }
 
-.reel-action:active { transform: translateY(1px); }
+.reel-action:active { 
+  transform: scale(0.95); 
+}
 
 .reel-action__count {
   color: #fff;

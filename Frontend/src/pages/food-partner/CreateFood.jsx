@@ -1,15 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../styles/create-food.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateFood = () => {
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ price, setPrice ] = useState('');
     const [ videoFile, setVideoFile ] = useState(null);
     const [ videoURL, setVideoURL ] = useState('');
     const [ fileError, setFileError ] = useState('');
     const fileInputRef = useRef(null);
+    const { id } = useParams();
+
+
 
     const navigate = useNavigate();
 
@@ -48,25 +52,31 @@ const CreateFood = () => {
     const openFileDialog = () => fileInputRef.current?.click();
 
     const onSubmit = async (e) => {
-        e.preventDefault();
-
+    e.preventDefault();
         const formData = new FormData();
-
         formData.append('name', name);
         formData.append('description', description);
-        formData.append("video", videoFile);
+        formData.append('price', Number(price || 0));
+        formData.append('video', videoFile);
 
-        const response = await axios.post("http://localhost:3000/api/food", formData, {
+        const response = await axios.post("http://localhost:3000/api/food/reels", formData, {
             withCredentials: true,
-        })
+        });
 
-        console.log(response.data);
-        navigate("/food-partner/:id"); // Redirect to home or another page after successful creation
-        // Optionally reset
-        // setName(''); setDescription(''); setVideoFile(null);
-    };
+        const redirectId = id || response.data.food.foodPartner;
 
-    const isDisabled = useMemo(() => !name.trim() || !videoFile, [ name, videoFile ]);
+        if (redirectId) {
+            navigate(`/food-partner/${redirectId}`);
+        } else {
+            navigate('/');
+        }
+
+    }; 
+
+    const isDisabled = useMemo(() => {
+        const priceValid = price !== '' && !isNaN(Number(price)) && Number(price) >= 0;
+        return !name.trim() || !videoFile || !priceValid;
+    }, [ name, videoFile, price ]);
 
     return (
         <div className="create-food-page">
@@ -140,6 +150,20 @@ const CreateFood = () => {
                             placeholder="e.g., Spicy Paneer Wrap"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="field-group">
+                        <label htmlFor="foodPrice">Price (₹)</label>
+                        <input
+                            id="foodPrice"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="e.g., 199.00"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
                             required
                         />
                     </div>
