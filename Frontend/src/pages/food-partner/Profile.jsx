@@ -1,21 +1,39 @@
-import React, { useState, useEffect, use } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../styles/profile.css'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import api from "../../services/api";
 
 const Profile = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
     const [ profile, setProfile ] = useState(null)
     const [ videos, setVideos ] = useState([])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/food-partner/${id}`, { withCredentials: true })
+        api.get(`/api/food-partner/${id}`)
             .then(response => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems)
             })
+            .catch(error => {
+                console.error('Error fetching profile:', error)
+            })
     }, [ id ])
 
+    const handleLogout = async () => {
+          try {
+            const res = await api.get('/api/auth/food-partner/logout')
+            if (res.status === 200) {
+                localStorage.clear()
+                navigate('/')
+            } else {
+                console.warn('Logout responded with', res.status)
+            }
+        } catch (error) {
+            console.error('Error logging out:', error)
+        }
+    }
 
     return (
         <main className="profile-page">
@@ -51,17 +69,18 @@ const Profile = () => {
             <section className="profile-grid" aria-label="Videos">
                 {videos.map((v) => (
                     <div key={v.id} className="profile-grid-item">
-                        {/* Placeholder tile; replace with <video> or <img> as needed */}
-
-
                         <video
                             className="profile-grid-video"
                             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                             src={v.video} muted ></video>
-
-
                     </div>
                 ))}
+            </section>
+
+            <section className="logout-section">
+                <button className="logout-btn" onClick={handleLogout}>
+                    Logout
+                </button>
             </section>
         </main>
     )

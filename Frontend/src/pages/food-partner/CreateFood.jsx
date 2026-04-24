@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../styles/create-food.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import api from "../../services/api";
 
 const CreateFood = () => {
     const [ name, setName ] = useState('');
@@ -59,9 +60,7 @@ const CreateFood = () => {
         formData.append('price', Number(price || 0));
         formData.append('video', videoFile);
 
-        const response = await axios.post("http://localhost:3000/api/food/reels", formData, {
-            withCredentials: true,
-        });
+        const response = await api.post("/api/food/reels", formData);
 
         const redirectId = id || response.data.food.foodPartner;
 

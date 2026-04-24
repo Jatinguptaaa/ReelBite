@@ -3,7 +3,7 @@ import '../../styles/profile.css'
 import '../../styles/reels.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-
+import api from "../../services/api";
 const Saved = () => {
     const [ videos, setVideos ] = useState([])
     const [ userAddress, setUserAddress ] = useState('')
@@ -11,7 +11,7 @@ const Saved = () => {
 
     useEffect(() => {
         // Fetch saved items
-        axios.get("http://localhost:3000/api/food/save", { withCredentials: true })
+        api.get("/api/food/save")
             .then(response => {
                 const savedFoods = (response.data.savedFoods || []).map((item) => ({
                     _id: item.food._id,
@@ -27,14 +27,14 @@ const Saved = () => {
             })
 
         // Fetch user address for top bar
-        axios.get("http://localhost:3000/api/auth/user/me", { withCredentials: true })
+        api.get("/api/auth/user/me")
             .then(res => setUserAddress(res.data?.address || ''))
             .catch(() => setUserAddress(''))
     }, [])
 
     const removeSaved = async (item) => {
         try {
-            await axios.post("http://localhost:3000/api/food/save", { foodId: item._id }, { withCredentials: true })
+            await api.post("/api/food/save", { foodId: item._id })
             // Remove from local list
             setVideos(prev => prev.filter(v => v._id !== item._id))
         } catch (err) {

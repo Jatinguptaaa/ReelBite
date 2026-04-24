@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import '../../styles/cart.css'
 import '../../styles/reels.css'
 import axios from 'axios'
-
+import api from "../../services/api";
 // Cart shows a single item (for this exercise) — it reads a stored cart item from
 // localStorage under `cartItem` if present, otherwise falls back to a sample.
 const fallbackItem = {
@@ -31,7 +31,7 @@ const Cart = () => {
     }
 
     // Prefer fetching the logged-in user's address (like Saved.jsx/ReelFeed)
-    axios.get('http://localhost:3000/api/auth/user/me', { withCredentials: true })
+    api.get('/api/auth/user/me')
       .then(res => {
         setUserAddress(res.data?.address || '')
       })
@@ -100,9 +100,11 @@ const Cart = () => {
             <div className="time">25-30mins</div>
           </div>
 
+          
+
           <div className="small-card card">
             <h4>To pay :</h4>
-            <div className="total-pay">₹{total.toFixed(2)}</div>
+            <div className="total-pay">₹{(total).toFixed(2)}</div>
           </div>
         </div>
 

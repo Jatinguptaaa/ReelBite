@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import '../../styles/reels.css'
 import ReelFeed from '../../components/ReelFeed'
+import api from "../../services/api";
+
 
 const Home = () => { 
     const [ videos, setVideos ] = useState([])
@@ -10,7 +12,7 @@ const Home = () => {
 
     useEffect(() => {
         // Fetch user details for address
-        axios.get("http://localhost:3000/api/auth/user/me", { withCredentials: true })
+        api.get("/api/auth/user/me")
             .then(response => {
                 // Log the response to debug
                 console.log('User data:', response.data);
@@ -23,7 +25,7 @@ const Home = () => {
                 setUserAddress('');
             })
 
-        axios.get("http://localhost:3000/api/food/reels", { withCredentials: true })
+        api.get("/api/food/reels")
             .then(response => {
                 console.log("Reels response:", response.data);
                 // Ensure proper initialization of video states
@@ -66,8 +68,8 @@ const Home = () => {
             }));
             
             // Make API call
-            const response = await axios.post(
-                "http://localhost:3000/api/food/like", 
+            const response = await api.post(
+                "/api/food/like", 
                 { foodId: item._id }, 
                 { withCredentials: true }
             );
@@ -126,10 +128,9 @@ const Home = () => {
                 }));
             
                 // Make API call
-                const response = await axios.post(
-                    "http://localhost:3000/api/food/save", 
-                    { foodId: item._id }, 
-                    { withCredentials: true }
+                const response = await api.post(
+                    "/api/food/save", 
+                    { foodId: item._id }           
                 );
             
                 console.log("Save response:", response.data);

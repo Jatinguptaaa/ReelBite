@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import '../../styles/placecod.css'
+import api from "../../services/api";
 
 const PlaceCOD = () => {
   const navigate = useNavigate()
@@ -9,7 +10,7 @@ const PlaceCOD = () => {
 
   useEffect(() => {
     // Try to fetch the user's address from backend, fallback to localStorage
-    axios.get('http://localhost:3000/api/auth/user/me', { withCredentials: true })
+    api.get('/api/auth/user/me')
       .then(res => setAddress(res.data?.address || ''))
       .catch(() => {
         try {

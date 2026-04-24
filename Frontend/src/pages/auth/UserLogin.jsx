@@ -2,6 +2,7 @@ import React from 'react';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from "../../services/api";
 
 const UserLogin = () => {
 
@@ -13,10 +14,10 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("http://localhost:3000/api/auth/user/login", {
+    const response = await api.post("/api/auth/user/login", {
       email,
       password
-    }, { withCredentials: true });
+    });
 
     console.log(response.data);
 

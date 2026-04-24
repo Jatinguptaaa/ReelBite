@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import '../../styles/profile.css'
 import '../../styles/reels.css'
+import api from "../../services/api";      
 
 const Profile = () => {
     const [user, setUser] = useState(null)
@@ -11,7 +12,7 @@ const Profile = () => {
 
     useEffect(() => {
         // Fetch user details
-        axios.get('http://localhost:3000/api/auth/user/me', { withCredentials: true })
+        api.get('/api/auth/user/me')
             .then(response => {
                 // Ensure name is set from firstName and lastName if available
                 const userData = response.data;
@@ -34,7 +35,7 @@ const Profile = () => {
     const handleLogout = async () => {
         try {
             // include credentials so browser will accept the Set-Cookie clearing the token
-            const res = await axios.get('http://localhost:3000/api/auth/user/logout', { withCredentials: true })
+            const res = await api.get('/api/auth/user/logout')
             if (res.status === 200) {
                 // Clear any local storage if needed
                 localStorage.clear()
