@@ -4,7 +4,7 @@ import UserRegister from '../pages/auth/UserRegister';
 import UserLogin from '../pages/auth/UserLogin';
 import FoodPartnerRegister from '../pages/auth/FoodPartnerRegister';
 import FoodPartnerLogin from '../pages/auth/FoodPartnerLogin';
-import Landing from '../pages/general/Landing';
+import Landing from '../pages/general/landing';
 import Home from '../pages/general/Home';
 import Saved from '../pages/general/Saved';
 import Cart from '../pages/general/Cart';
